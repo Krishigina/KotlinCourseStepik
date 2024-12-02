@@ -45,12 +45,10 @@ fun main() {
         }
     }
 
-    val truckName: String
-
-    if (truck){
-        truckName = "грузовой"
+    val truckName: String = if (truck){
+        "грузовой"
     } else {
-        truckName = "легковой"
+        "легковой"
     }
 
     println("Вид ТС: $truckName автомобиль\n" +

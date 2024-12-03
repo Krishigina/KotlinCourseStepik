@@ -20,7 +20,7 @@ class Car {
 
 }
 
-fun main() {
+fun task() {
     val data = readln().split(" ")
     val car = Car(data[0], data[1], data[2].toInt(), data[3])
     car.printInfo()

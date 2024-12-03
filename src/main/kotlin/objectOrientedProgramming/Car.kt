@@ -8,7 +8,7 @@ class Car {
 
     //добавьте метод init()
 
-    fun drive(enginePower: Int, brand: String, model: String) {
+    fun drive() {
         if (enginePower >= 120) println("Еду быстро, но недалеко на $brand $model")
         else println("Еду далеко, но небыстро на $brand $model")
     }
@@ -25,5 +25,5 @@ fun main() {
     val car = Car()
     val data = readln().split(" ")
     car.init(brand = data[0], model = data[1], enginePower = data[2].toInt(), bodyColor = data[3])
-    car.drive(enginePower = data[2].toInt(), brand = data[0], model = data[1])
+    car.drive()
 }

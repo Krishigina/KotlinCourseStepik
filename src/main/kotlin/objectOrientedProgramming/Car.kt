@@ -6,4 +6,8 @@ class Car {
     var enginePower: Int = 0
     var bodyColor:String = ""
 
+    fun drive(){
+        println("Еду на автомобиле")
+    }
+
 }

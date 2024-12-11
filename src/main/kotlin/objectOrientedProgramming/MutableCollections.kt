@@ -50,7 +50,7 @@ fun main() {
         else -> println("Некорректное значение")
     }
 }
-
+//
 fun showList(list: List<String>) {
     for (user in list) {
         println(user)

@@ -3,11 +3,13 @@ package objectOrientedProgramming.corporation
 import org.example.objectOrientedProgramming.corporation.Assistant
 import org.example.objectOrientedProgramming.corporation.Consultant
 import org.example.objectOrientedProgramming.corporation.Worker
+import org.example.objectOrientedProgramming.corporation.WorkerType
 
 class Director(
+    id: Int,
     name: String,
     age: Int
-) : Worker(name = name, age = age) {
+) : Worker(id = id, name = name, age = age, WorkerType.DIRECTOR) {
 
     fun takeCoffee(assistant: Assistant) {
         val drinkName: String = assistant.bringCoffee()

@@ -3,9 +3,10 @@ package org.example.objectOrientedProgramming.corporation
 import kotlin.random.Random
 
 class Consultant(
+    id: Int,
     name: String,
     age: Int = 0
-) : Worker(name = name, age = age) {
+) : Worker(id = id, name = name, age = age, WorkerType.CONSULTANT) {
 
     fun sayHello() {
         print("Hello! My name is $name")

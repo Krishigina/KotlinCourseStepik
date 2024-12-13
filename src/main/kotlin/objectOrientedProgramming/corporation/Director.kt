@@ -1,15 +1,12 @@
 package objectOrientedProgramming.corporation
 
-import org.example.objectOrientedProgramming.corporation.Assistant
-import org.example.objectOrientedProgramming.corporation.Consultant
-import org.example.objectOrientedProgramming.corporation.Worker
-import org.example.objectOrientedProgramming.corporation.WorkerType
+import org.example.objectOrientedProgramming.corporation.*
 
 class Director(
     id: Int,
     name: String,
     age: Int
-) : Worker(id = id, name = name, age = age, WorkerType.DIRECTOR) {
+) : Worker(id = id, name = name, age = age, WorkerType.DIRECTOR), Supplier {
 
     fun takeCoffee(assistant: Assistant) {
         val drinkName: String = assistant.bringCoffee()
@@ -23,5 +20,9 @@ class Director(
 
     override fun work() {
         println("I'm drinking coffee..")
+    }
+
+    override fun byThing() {
+        println("$name, ${workerType.title} - I'm buying thing now")
     }
 }

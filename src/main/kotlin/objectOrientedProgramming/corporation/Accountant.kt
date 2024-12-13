@@ -7,10 +7,10 @@ class Accountant(
     id: Int,
     name: String,
     age: Int
-) : Worker(id, name, age, WorkerType.ACCOUNTANT) {
+) : Worker(id, name, age, WorkerType.ACCOUNTANT), Cleaner, Supplier {
 
-    val file = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\product_cards.txt")
-    val empolyees = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\employees.txt")
+    private val file = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\product_cards.txt")
+    private val empolyees = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\employees.txt")
 
     override fun work() {
         while (true) {
@@ -116,14 +116,14 @@ class Accountant(
         return workers
     }
 
-    fun showAllEmployees() {
+    private fun showAllEmployees() {
         val employees = loadAllEmployees()
         for (employee in employees){
             employee.printInfo()
         }
     }
 
-    fun removeEmployee() {
+    private fun removeEmployee() {
         val employees = loadAllEmployees()
         print("Enter id of employee for removing: ")
         val id = readln().toInt()
@@ -139,7 +139,7 @@ class Accountant(
         }
     }
 
-    fun removeProductCard() {
+    private fun removeProductCard() {
         val cards = loadAllCards()
         print("Enter name of card for removing: ")
         val name = readln()
@@ -155,7 +155,7 @@ class Accountant(
         }
     }
 
-    fun loadAllCards(): MutableList<ProductCard> {
+    private fun loadAllCards(): MutableList<ProductCard> {
         if (!file.exists()) file.createNewFile()
         val cards = mutableListOf<ProductCard>()
         val content = file.readText().trim()
@@ -194,7 +194,7 @@ class Accountant(
     }
 
 
-    fun showAllItems() {
+    private fun showAllItems() {
         val cards = loadAllCards()
         for (card in cards){
             card.printInfo()
@@ -202,7 +202,7 @@ class Accountant(
     }
 
 
-    fun saveProductcardToFile(productcard: ProductCard) {
+    private fun saveProductcardToFile(productcard: ProductCard) {
         file.appendText("${productcard.name}%${productcard.brand}%${productcard.price}%")
         when (productcard) {
             is FoodCard -> {
@@ -222,7 +222,7 @@ class Accountant(
     }
 
 
-    fun registerNewItem() {
+    private fun registerNewItem() {
         val productTypes = ProductType.entries
         print("Enter the product type.")
         for ((index, type) in productTypes.withIndex()) {
@@ -261,5 +261,12 @@ class Accountant(
             }
         }
         saveProductcardToFile(card)
+    }
+
+    override fun clean() {
+        println("$name, ${workerType.title} - I'm cleaning now")
+    }
+    override fun byThing() {
+        println("$name, ${workerType.title} - I'm buying thing now")
     }
 }

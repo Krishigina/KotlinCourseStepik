@@ -4,7 +4,7 @@ class Assistant(
     id: Int,
     name: String,
     age: Int
-) : Worker(id = id, name = name, age = age, WorkerType.ASSISTANT) {
+) : Worker(id = id, name = name, age = age, WorkerType.ASSISTANT), Cleaner, Supplier {
     fun bringCoffee(count: Int = 1, drinkName: String = "Cappuccino"): String {
         repeat(count) {
             println("Get up")
@@ -20,5 +20,12 @@ class Assistant(
 
     override fun work() {
         println("I'm answering the phone now..")
+    }
+
+    override fun clean() {
+        println("$name, ${workerType.title} - I'm cleaning now")
+    }
+    override fun byThing() {
+        println("$name, ${workerType.title} - I'm buying thing now")
     }
 }

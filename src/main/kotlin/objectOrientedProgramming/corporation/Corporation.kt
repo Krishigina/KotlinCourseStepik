@@ -1,10 +1,15 @@
 package org.example.objectOrientedProgramming.corporation
 
-import java.io.File
-
 fun main() {
 
     val accountant = Accountant(0, "Helen", 25)
-    accountant.saveEmployeeToFile(accountant)
-    accountant.work()
+    val employees: MutableList<Worker> = accountant.loadAllEmployees()
+    for (employee in employees){
+        if (employee is Cleaner){
+            employee.clean()
+        }
+        if (employee is Supplier){
+            employee.byThing()
+        }
+    }
 }

@@ -3,7 +3,7 @@ package org.example.objectOrientedProgramming.corporation
 import objectOrientedProgramming.corporation.Director
 import java.io.File
 
-class WorkersRepository {
+object WorkersRepository {
 
     private val fileWorkers = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\employees.txt")
 

@@ -2,7 +2,7 @@ package org.example.objectOrientedProgramming.corporation
 
 import java.io.File
 
-class CardsRepository {
+object CardsRepository {
 
     private val fileCards = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\product_cards.txt")
 

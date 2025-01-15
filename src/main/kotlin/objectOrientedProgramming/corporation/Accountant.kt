@@ -16,9 +16,9 @@ class Accountant(
     salary = salary
 ), Cleaner, Supplier {
 
-    private val workersRepository = WorkersRepository()
+    private val workersRepository = WorkersRepository
 
-    private val cardsRepository = CardsRepository()
+    private val cardsRepository = CardsRepository
 
     override fun work() {
         while (true) {

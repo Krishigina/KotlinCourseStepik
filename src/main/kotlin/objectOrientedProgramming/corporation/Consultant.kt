@@ -5,8 +5,15 @@ import kotlin.random.Random
 class Consultant(
     id: Int,
     name: String,
-    age: Int = 0
-) : Worker(id = id, name = name, age = age, WorkerType.CONSULTANT), Cleaner {
+    age: Int = 0,
+    salary: Int
+) : Worker(
+    id = id,
+    name = name,
+    age = age,
+    workerType = WorkerType.CONSULTANT,
+    salary = salary
+), Cleaner {
 
     fun sayHello() {
         print("Hello! My name is $name")

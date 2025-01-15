@@ -5,8 +5,15 @@ import org.example.objectOrientedProgramming.corporation.*
 class Director(
     id: Int,
     name: String,
-    age: Int
-) : Worker(id = id, name = name, age = age, WorkerType.DIRECTOR), Supplier {
+    age: Int,
+    salary: Int
+) : Worker(
+    id = id,
+    name = name,
+    age = age,
+    workerType = WorkerType.DIRECTOR,
+    salary = salary
+), Supplier {
 
     fun takeCoffee(assistant: Assistant) {
         val drinkName: String = assistant.bringCoffee()

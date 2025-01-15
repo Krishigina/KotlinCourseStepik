@@ -6,8 +6,15 @@ import java.io.File
 class Accountant(
     id: Int,
     name: String,
-    age: Int
-) : Worker(id, name, age, WorkerType.ACCOUNTANT), Cleaner, Supplier {
+    age: Int,
+    salary: Int
+) : Worker(
+    id = id,
+    name = name,
+    age = age,
+    workerType = WorkerType.ACCOUNTANT,
+    salary = salary
+), Cleaner, Supplier {
 
     private val file = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\product_cards.txt")
     private val empolyees = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\employees.txt")
@@ -29,7 +36,25 @@ class Accountant(
                 OperationCode.REGISTER_NEW_EMPLOYEE -> registerNewEmployee()
                 OperationCode.FIRE_AN_EMPLOYEE -> removeEmployee()
                 OperationCode.SHOW_ALL_EMPLOYEES -> showAllEmployees()
+                OperationCode.CHANGE_SALARY -> changeSalary()
             }
+        }
+    }
+
+    private fun changeSalary(){
+        print("Enter employee's id to change salary: ")
+        val id = readln().toInt()
+
+        print("Enter new salary: ")
+        val salary = readln().toInt()
+
+        val employees = loadAllEmployees()
+        empolyees.writeText("")
+        for (employee in employees) {
+            if (employee.id == id) {
+                employee.setSalary(salary)
+            }
+            saveEmployeeToFile(employee)
         }
     }
 
@@ -53,27 +78,29 @@ class Accountant(
         val workerName = readln()
         print("Enter the worker age: ")
         val workerAge = readln().toInt()
+        print("Enter the worker salary: ")
+        val workerSalary = readln().toInt()
 
         val employee = when (workerType) {
             WorkerType.DIRECTOR -> {
-                Director(workerId, workerName, workerAge)
+                Director(workerId, workerName, workerAge, workerSalary)
             }
 
             WorkerType.ACCOUNTANT -> {
-                Accountant(workerId, workerName, workerAge)
+                Accountant(workerId, workerName, workerAge, workerSalary)
             }
             WorkerType.ASSISTANT -> {
-                Assistant(workerId, workerName, workerAge)
+                Assistant(workerId, workerName, workerAge, workerSalary)
             }
             WorkerType.CONSULTANT -> {
-                Consultant(workerId, workerName, workerAge)
+                Consultant(workerId, workerName, workerAge, workerSalary)
             }
         }
         saveEmployeeToFile(employee)
     }
 
     fun saveEmployeeToFile(worker: Worker) {
-        empolyees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.workerType}\n")
+        empolyees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.getSalary()}%${worker.workerType}\n")
 
     }
 
@@ -94,21 +121,22 @@ class Accountant(
             val id = properties[0].toInt()
             val name = properties[1]
             val age = properties[2].toInt()
+            val salary = properties[3].toInt()
             val type = properties.last()
 
             val workerType = WorkerType.valueOf(type)
             val worker = when (workerType) {
                 WorkerType.DIRECTOR -> {
-                    Director(id, name, age)
+                    Director(id, name, age, salary)
                 }
                 WorkerType.ACCOUNTANT -> {
-                    Accountant(id, name, age)
+                    Accountant(id, name, age, salary)
                 }
                 WorkerType.ASSISTANT -> {
-                    Assistant(id, name, age)
+                    Assistant(id, name, age, salary)
                 }
                 WorkerType.CONSULTANT -> {
-                    Consultant(id, name, age)
+                    Consultant(id, name, age, salary)
                 }
             }
             workers.add(worker)

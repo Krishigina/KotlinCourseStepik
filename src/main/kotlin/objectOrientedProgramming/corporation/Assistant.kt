@@ -3,8 +3,15 @@ package org.example.objectOrientedProgramming.corporation
 class Assistant(
     id: Int,
     name: String,
-    age: Int
-) : Worker(id = id, name = name, age = age, WorkerType.ASSISTANT), Cleaner, Supplier {
+    age: Int,
+    salary: Int
+) : Worker(
+    id = id,
+    name = name,
+    age = age,
+    workerType = WorkerType.ASSISTANT,
+    salary = salary
+), Cleaner, Supplier {
     fun bringCoffee(count: Int = 1, drinkName: String = "Cappuccino"): String {
         repeat(count) {
             println("Get up")

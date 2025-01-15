@@ -7,15 +7,18 @@ object WorkersRepository {
 
     private val fileWorkers = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\employees.txt")
 
-    val workers = loadAllEmployees()
+    private val _workers = loadAllEmployees()
+
+    val workers
+        get() = _workers.toList()
 
     fun registerNewEmployee(worker: Worker){
-        workers.add(worker)
+        _workers.add(worker)
     }
 
     fun saveChanges(){
         var content = StringBuilder()
-        for (worker in workers){
+        for (worker in _workers){
             content.append("${worker.id}%${worker.name}%${worker.age}%${worker.getSalary()}%${worker.workerType}\n")
         }
         fileWorkers.writeText(content.toString())
@@ -63,16 +66,16 @@ object WorkersRepository {
 
     fun removeEmployee(id: Int) {
         val id = readln().toInt()
-        for (worker in workers) {
+        for (worker in _workers) {
             if (worker.id == id) {
-                workers.remove(worker)
+                _workers.remove(worker)
                 break
             }
         }
     }
 
     fun changeSalary(id: Int, salary: Int){
-        for (worker in workers) {
+        for (worker in _workers) {
             if (worker.id == id) {
                 worker.setSalary(salary)
             }

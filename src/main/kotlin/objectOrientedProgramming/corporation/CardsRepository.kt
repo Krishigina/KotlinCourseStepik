@@ -6,15 +6,18 @@ object CardsRepository {
 
     private val fileCards = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\product_cards.txt")
 
-    val cards = loadAllCards()
+    private val _cards = loadAllCards()
+
+    val cards
+        get() = _cards.toList()
 
     fun registerNewItem(card: ProductCard){
-        cards.add(card)
+        _cards.add(card)
     }
 
     fun saveChanges(){
         var content = StringBuilder()
-        for (card in cards){
+        for (card in _cards){
             content.append("${card.name}%${card.brand}%${card.price}%")
             when (card) {
                 is FoodCard -> {
@@ -37,11 +40,11 @@ object CardsRepository {
 
     private fun loadAllCards(): MutableList<ProductCard> {
         if (!fileCards.exists()) fileCards.createNewFile()
-        val cards = mutableListOf<ProductCard>()
+        val _cards = mutableListOf<ProductCard>()
         val content = fileCards.readText().trim()
 
         if (content.isEmpty()){
-            return cards
+            return _cards
         }
 
         val cardsAsString = content.split("\n")
@@ -68,15 +71,15 @@ object CardsRepository {
                     ShoeCard(name, brand, price, size)
                 }
             }
-            cards.add(productCard)
+            _cards.add(productCard)
         }
-        return cards
+        return _cards
     }
 
     fun removeProductCard(name: String) {
-        for (card in cards) {
+        for (card in _cards) {
             if (card.name == name) {
-                cards.remove(card)
+                _cards.remove(card)
                 break
             }
         }

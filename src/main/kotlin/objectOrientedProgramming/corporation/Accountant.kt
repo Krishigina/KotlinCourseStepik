@@ -16,8 +16,9 @@ class Accountant(
     salary = salary
 ), Cleaner, Supplier {
 
-    private val file = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\product_cards.txt")
-    private val empolyees = File("src\\main\\kotlin\\objectOrientedProgramming\\corporation\\employees.txt")
+    private val workersRepository = WorkersRepository()
+
+    private val cardsRepository = CardsRepository()
 
     override fun work() {
         while (true) {
@@ -29,7 +30,11 @@ class Accountant(
             val operationIndex = readln().toInt()
             val operationCode = operationCodes[operationIndex]
             when (operationCode) {
-                OperationCode.EXIT -> break
+                OperationCode.EXIT -> {
+                    workersRepository.saveChanges()
+                    cardsRepository.saveChanges()
+                    break
+                }
                 OperationCode.REGISTER_NEW_ITEM -> registerNewItem()
                 OperationCode.SHOW_ALL_ITEMS -> showAllItems()
                 OperationCode.REMOVE_PRODUCT_CARD -> removeProductCard()
@@ -48,14 +53,7 @@ class Accountant(
         print("Enter new salary: ")
         val salary = readln().toInt()
 
-        val employees = loadAllEmployees()
-        empolyees.writeText("")
-        for (employee in employees) {
-            if (employee.id == id) {
-                employee.setSalary(salary)
-            }
-            saveEmployeeToFile(employee)
-        }
+        workersRepository.changeSalary(id, salary)
     }
 
     private fun registerNewEmployee() {
@@ -96,157 +94,37 @@ class Accountant(
                 Consultant(workerId, workerName, workerAge, workerSalary)
             }
         }
-        saveEmployeeToFile(employee)
+        workersRepository.registerNewEmployee(employee)
     }
 
-    fun saveEmployeeToFile(worker: Worker) {
-        empolyees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.getSalary()}%${worker.workerType}\n")
 
-    }
-
-    fun loadAllEmployees(): MutableList<Worker> {
-        val workers = mutableListOf<Worker>()
-
-        if (!empolyees.exists()) empolyees.createNewFile()
-
-        val content = empolyees.readText().trim()
-
-        if (content.isEmpty()){
-            return workers
-        }
-
-        val workersAsString = content.split("\n")
-        for (workerAsString in workersAsString) {
-            val properties = workerAsString.split("%")
-            val id = properties[0].toInt()
-            val name = properties[1]
-            val age = properties[2].toInt()
-            val salary = properties[3].toInt()
-            val type = properties.last()
-
-            val workerType = WorkerType.valueOf(type)
-            val worker = when (workerType) {
-                WorkerType.DIRECTOR -> {
-                    Director(id, name, age, salary)
-                }
-                WorkerType.ACCOUNTANT -> {
-                    Accountant(id, name, age, salary)
-                }
-                WorkerType.ASSISTANT -> {
-                    Assistant(id, name, age, salary)
-                }
-                WorkerType.CONSULTANT -> {
-                    Consultant(id, name, age, salary)
-                }
-            }
-            workers.add(worker)
-        }
-        return workers
-    }
 
     private fun showAllEmployees() {
-        val employees = loadAllEmployees()
+        val employees = workersRepository.workers
         for (employee in employees){
             employee.printInfo()
         }
     }
 
     private fun removeEmployee() {
-        val employees = loadAllEmployees()
         print("Enter id of employee for removing: ")
         val id = readln().toInt()
-        for (employee in employees) {
-            if (employee.id == id) {
-                employees.remove(employee)
-                break
-            }
-        }
-        empolyees.writeText("")
-        for (employee in employees){
-            saveEmployeeToFile(employee)
-        }
+        workersRepository.removeEmployee(id)
+
     }
 
     private fun removeProductCard() {
-        val cards = loadAllCards()
         print("Enter name of card for removing: ")
         val name = readln()
-        for (card in cards) {
-            if (card.name == name) {
-                cards.remove(card)
-                break
-            }
-        }
-        file.writeText("")
-        for (card in cards){
-            saveProductcardToFile(card)
-        }
-    }
-
-    private fun loadAllCards(): MutableList<ProductCard> {
-        if (!file.exists()) file.createNewFile()
-        val cards = mutableListOf<ProductCard>()
-        val content = file.readText().trim()
-
-        if (content.isEmpty()){
-            return cards
-        }
-
-        val cardsAsString = content.split("\n")
-        for (cardAsString in cardsAsString) {
-            val properties = cardAsString.split("%")
-            val name = properties[0]
-            val brand = properties[1]
-            val price = properties[2].toInt()
-            val type = properties.last()
-            val productType = ProductType.valueOf(type)
-            val productCard = when (productType) {
-                ProductType.FOOD -> {
-                    val caloric = properties[3].toInt()
-                    FoodCard(name, brand, price, caloric)
-                }
-
-                ProductType.APPLIANCE -> {
-                    val wattage = properties[3].toInt()
-                    ApplianceCard(name, brand, price, wattage)
-                }
-
-                ProductType.SHOE -> {
-                    val size = properties[3].toFloat()
-                    ShoeCard(name, brand, price, size)
-                }
-            }
-            cards.add(productCard)
-        }
-        return cards
+        cardsRepository.removeProductCard(name)
     }
 
 
     private fun showAllItems() {
-        val cards = loadAllCards()
+        val cards = cardsRepository.cards
         for (card in cards){
             card.printInfo()
         }
-    }
-
-
-    private fun saveProductcardToFile(productcard: ProductCard) {
-        file.appendText("${productcard.name}%${productcard.brand}%${productcard.price}%")
-        when (productcard) {
-            is FoodCard -> {
-                val caloric = productcard.caloric
-                file.appendText("$caloric%")
-            }
-            is ApplianceCard -> {
-                val wattage = productcard.wattage
-                file.appendText("$wattage%")
-            }
-            is ShoeCard -> {
-                val size = productcard.size
-                file.appendText("$size%")
-            }
-        }
-        file.appendText("${productcard.productType}\n")
     }
 
 
@@ -288,7 +166,7 @@ class Accountant(
                 ShoeCard(productName, productBrand, productPrice, size)
             }
         }
-        saveProductcardToFile(card)
+        cardsRepository.registerNewItem(card)
     }
 
     override fun clean() {

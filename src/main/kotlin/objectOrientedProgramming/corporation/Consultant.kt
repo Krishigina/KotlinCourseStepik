@@ -2,11 +2,11 @@ package org.example.objectOrientedProgramming.corporation
 
 import kotlin.random.Random
 
-class Consultant(
-    id: Int,
-    name: String,
-    age: Int = 0,
-    salary: Int
+data class Consultant(
+    override val id: Int,
+    override val name: String,
+    override val age: Int = 0,
+    override val salary: Int
 ) : Worker(
     id = id,
     name = name,

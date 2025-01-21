@@ -19,4 +19,8 @@ abstract class Worker(
         println(this)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other !is Worker) return false
+        return this.id == other.id && this.name == other.name && this.workerType == other.workerType && this.age == other.age
+    }
 }

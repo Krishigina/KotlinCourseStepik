@@ -23,4 +23,8 @@ abstract class Worker(
         if (other !is Worker) return false
         return this.id == other.id && this.name == other.name && this.workerType == other.workerType && this.age == other.age
     }
+
+    override fun hashCode(): Int {
+        return javaClass.hashCode()
+    }
 }

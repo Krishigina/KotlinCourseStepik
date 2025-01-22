@@ -38,9 +38,9 @@ object CardsRepository {
         fileCards.writeText(content.toString())
     }
 
-    private fun loadAllCards(): MutableList<ProductCard> {
+    private fun loadAllCards(): MutableSet<ProductCard> {
         if (!fileCards.exists()) fileCards.createNewFile()
-        val _cards = mutableListOf<ProductCard>()
+        val _cards = mutableSetOf<ProductCard>()
         val content = fileCards.readText().trim()
 
         if (content.isEmpty()){

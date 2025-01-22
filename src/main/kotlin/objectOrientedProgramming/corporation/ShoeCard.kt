@@ -1,13 +1,10 @@
 package org.example.objectOrientedProgramming.corporation
 
 class ShoeCard(
-    name: String,
-    brand: String,
-    price: Int,
+    override val name: String,
+    override val brand: String,
+    override val price: Int,
     val size: Float
 ) : ProductCard(name, brand, price, ProductType.SHOE) {
 
-    override fun toString(): String {
-        return "Name: $name, Brand: $brand, Price: $price, Product type: ${productType.title}, Size: $size\n"
-    }
 }

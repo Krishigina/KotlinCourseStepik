@@ -1,6 +1,8 @@
 package org.example.multithreading.singletonCompanionInit.dogs
 
 import kotlinx.serialization.json.Json
+import org.example.multithreading.singletonCompanionInit.users.UserRepository
+import org.example.multithreading.singletonCompanionInit.users.UserRepository.Companion
 import java.io.File
 
 class DogsRepository private constructor() {
@@ -20,16 +22,20 @@ class DogsRepository private constructor() {
     }
 
     companion object {
-        private lateinit var instance: DogsRepository
+        private var instance = DogsRepository() ?: null
+        private val lock = Any()
 
         fun getInstance(password: String): DogsRepository {
             val filePassword = File("password_dogs.txt").readText().trim()
             if (password != filePassword) throw IllegalArgumentException("Wrong password")
-            if (!::instance.isInitialized) {
-                return DogsRepository()
+            instance?.let { return it }
+            synchronized(lock) {
+                instance?.let { return it }
+
+                return DogsRepository().also {
+                    instance = it
+                }
             }
-            return instance
         }
     }
-
 }

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "breedName": "Golden Retriever",
+    "dogName": "Errick",
+    "weight": 123.3
+  },
+  {
+    "id": 2,
+    "breedName": "Bulldog",
+    "dogName": "Hilton",
+    "weight": 31.2
+  },
+  {
+    "id": 3,
+    "breedName": "German Shepherd",
+    "dogName": "Hershel",
+    "weight": 43.6
+  },
+  {
+    "id": 4,
+    "breedName": "Labrador Retriever",
+    "dogName": "Gonzalo",
+    "weight": 71.5
+  },
+  {
+    "id": 5,
+    "breedName": "Golden Retriever",
+    "dogName": "Ermin",
+    "weight": 23.7
+  },
+  {
+    "id": 6,
+    "breedName": "Bulldog",
+    "dogName": "Mata",
+    "weight": 6.8
+  },
+  {
+    "id": 7,
+    "breedName": "Poodle",
+    "dogName": "Hansiain",
+    "weight": 24.5
+  },
+  {
+    "id": 8,
+    "breedName": "Golden Retriever",
+    "dogName": "Ricard",
+    "weight": 100.4
+  },
+  {
+    "id": 9,
+    "breedName": "Golden Retriever",
+    "dogName": "Linn",
+    "weight": 137.7
+  },
+  {
+    "id": 10,
+    "breedName": "Labrador Retriever",
+    "dogName": "Seymour",
+    "weight": 47.4
+  }
+]

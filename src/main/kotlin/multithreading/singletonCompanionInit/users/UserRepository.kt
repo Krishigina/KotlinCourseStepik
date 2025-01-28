@@ -1,0 +1,34 @@
+package org.example.multithreading.singletonCompanionInit.users
+
+import kotlinx.serialization.json.Json
+import java.io.File
+
+class UserRepository private constructor() {
+    init {
+        println("Creating repository...")
+    }
+
+    private val fileUser = File("usersRepository.json")
+
+    private val _users = loadUsers()
+    val users
+        get() = _users.toList()
+
+    private fun loadUsers(): MutableList<User> {
+        val content = fileUser.readText().trim()
+        return Json.decodeFromString(content)
+    }
+
+    companion object {
+        private val instance: UserRepository by lazy {
+            UserRepository()
+        }
+
+        fun getInstance(password: String): UserRepository {
+            val filePassword = File("password_users.txt").readText().trim()
+            if (password != filePassword) throw IllegalArgumentException("Wrong password")
+            return instance
+        }
+    }
+
+}

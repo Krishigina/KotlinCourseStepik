@@ -10,5 +10,5 @@ data class User(
     @SerialName("last_name") val lastName: String,
     @SerialName("email") val email: String,
     @SerialName("gender") val gender: Gender,
-    @SerialName("age") val age: Int,
+    @SerialName("age") val age: Int
 )

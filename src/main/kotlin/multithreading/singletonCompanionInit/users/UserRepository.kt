@@ -10,6 +10,8 @@ class UserRepository private constructor() {
 
     private val fileUser = File("usersRepository.json")
 
+    private val observers = mutableListOf<Display>()
+
     private val _users = loadUsers()
     val users
         get() = _users.toList()
@@ -17,6 +19,31 @@ class UserRepository private constructor() {
     private fun loadUsers(): MutableList<User> {
         val content = fileUser.readText().trim()
         return Json.decodeFromString(content)
+    }
+
+    private fun notifyObservers(){
+        for (observer in observers){
+            observer.onChanged(users)
+        }
+    }
+
+    fun registerObserver(observer: Display){
+        observers.add(observer)
+        observer.onChanged(users)
+    }
+
+
+    fun addUser(firstName: String, lastName: String, age: Int){
+        val id = users.maxOf {it.userId} + 1
+        _users.add(User(id, firstName = firstName, lastName = lastName, email = "", gender = Gender.MALE, age = age))
+        notifyObservers()
+    }
+    fun deleteUser(id: Int){
+        _users.removeIf {it.userId == id }
+        notifyObservers()
+    }
+    fun saveChanges(){
+        fileUser.writeText(Json.encodeToString(_users))
     }
 
     companion object {

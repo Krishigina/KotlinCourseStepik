@@ -47,7 +47,7 @@ class UserRepository private constructor() {
     }
 
     companion object {
-        private var instance = UserRepository() ?: null
+        private var instance: UserRepository? = null
         private val lock = Any()
 
         fun getInstance(password: String): UserRepository {

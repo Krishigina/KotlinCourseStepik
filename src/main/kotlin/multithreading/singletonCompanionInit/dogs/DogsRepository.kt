@@ -22,7 +22,7 @@ class DogsRepository private constructor() {
     }
 
     companion object {
-        private var instance = DogsRepository() ?: null
+        private var instance : DogsRepository? = null
         private val lock = Any()
 
         fun getInstance(password: String): DogsRepository {

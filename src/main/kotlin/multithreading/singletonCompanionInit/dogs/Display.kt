@@ -23,11 +23,9 @@ class Display {
             isResizable = false
             add(scrollPane)
         }
-        DogsRepository.getInstance("qwerty").registerObserver(object: Observer<List<Dog>> {
-            override fun onChanged(newValue: List<Dog>) {
-                newValue.joinToString("\n").let { textArea.text = it }
-            }
-        })
+        DogsRepository.getInstance("qwerty").addOnDogsChangedListener { dogs ->
+            dogs.joinToString("\n").let { textArea.text = it }
+        }
 
     }
 }

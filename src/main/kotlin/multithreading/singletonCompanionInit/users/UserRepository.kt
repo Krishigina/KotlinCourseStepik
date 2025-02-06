@@ -1,6 +1,7 @@
 package org.example.multithreading.singletonCompanionInit.users
 
 import kotlinx.serialization.json.Json
+import org.example.multithreading.singletonCompanionInit.observers.Observer
 import java.io.File
 
 class UserRepository private constructor() {
@@ -10,7 +11,7 @@ class UserRepository private constructor() {
 
     private val fileUser = File("usersRepository.json")
 
-    private val observers = mutableListOf<Display>()
+    private val observers = mutableListOf<Observer<List<User>>>()
 
     private val _users = loadUsers()
     val users
@@ -27,7 +28,7 @@ class UserRepository private constructor() {
         }
     }
 
-    fun registerObserver(observer: Display){
+    fun registerObserver(observer: Observer<List<User>>){
         observers.add(observer)
         observer.onChanged(users)
     }

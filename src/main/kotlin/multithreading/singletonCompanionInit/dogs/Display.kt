@@ -1,5 +1,6 @@
 package org.example.multithreading.singletonCompanionInit.dogs
 
+import org.example.multithreading.singletonCompanionInit.observers.Observer
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
@@ -22,9 +23,11 @@ class Display {
             isResizable = false
             add(scrollPane)
         }
-        DogsRepository.getInstance("qwerty")
-            .dogs
-            .joinToString("\n")
-            .let { textArea.text = it }
+        DogsRepository.getInstance("qwerty").registerObserver(object: Observer<List<Dog>> {
+            override fun onChanged(newValue: List<Dog>) {
+                newValue.joinToString("\n").let { textArea.text = it }
+            }
+        })
+
     }
 }

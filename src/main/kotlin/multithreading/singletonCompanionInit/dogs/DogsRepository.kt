@@ -1,8 +1,7 @@
 package org.example.multithreading.singletonCompanionInit.dogs
 
 import kotlinx.serialization.json.Json
-import org.example.multithreading.singletonCompanionInit.users.UserRepository
-import org.example.multithreading.singletonCompanionInit.users.UserRepository.Companion
+import org.example.multithreading.singletonCompanionInit.observers.Observer
 import java.io.File
 
 class DogsRepository private constructor() {
@@ -10,6 +9,7 @@ class DogsRepository private constructor() {
         println("Creating repository...")
     }
 
+    private val observers = mutableListOf<Observer<List<Dog>>>()
     private val fileDog = File("dogs.json")
 
     private val _dogs = loadDogs()
@@ -19,6 +19,30 @@ class DogsRepository private constructor() {
     private fun loadDogs(): MutableList<Dog> {
         val content = fileDog.readText().trim()
         return Json.decodeFromString(content)
+    }
+
+    private fun notifyObservers(){
+        for (observer in observers){
+            observer.onChanged(dogs)
+        }
+    }
+    fun registerObserver(observer: Observer<List<Dog>>){
+        observers.add(observer)
+        observer.onChanged(dogs)
+    }
+
+    fun addDog(breedName: String, dogName: String, weight: Double){
+        val id = dogs.maxOf {it.id} + 1
+        _dogs.add(Dog(id, breedName = breedName, dogName = dogName, weight = weight))
+        notifyObservers()
+    }
+    fun deleteDog(id: Int){
+        _dogs.removeIf {it.id == id }
+        notifyObservers()
+    }
+
+    fun saveChanges(){
+        fileDog.writeText(Json.encodeToString(_dogs))
     }
 
     companion object {

@@ -13,9 +13,12 @@ class DogsRepository private constructor() {
 
     private val fileDog = File("dogs.json")
 
-    private val _dogs = loadDogs()
+    private val dogsList = loadDogs()
 
-    val dogs = MutableObservable(_dogs.toList())
+    private val _dogs = MutableObservable(dogsList.toList())
+    val dogs: Observable<List<Dog>>
+        get() = _dogs
+
 
     private fun loadDogs(): MutableList<Dog> {
         val content = fileDog.readText().trim()
@@ -23,17 +26,17 @@ class DogsRepository private constructor() {
     }
 
     fun addDog(breedName: String, dogName: String, weight: Double){
-        val id = _dogs.maxOf {it.id} + 1
-        _dogs.add(Dog(id, breedName = breedName, dogName = dogName, weight = weight))
-        dogs.currentValue = _dogs.toList()
+        val id = dogsList.maxOf {it.id} + 1
+        dogsList.add(Dog(id, breedName = breedName, dogName = dogName, weight = weight))
+        _dogs.currentValue = dogsList.toList()
     }
     fun deleteDog(id: Int){
-        _dogs.removeIf {it.id == id }
-        dogs.currentValue = _dogs.toList()
+        dogsList.removeIf {it.id == id }
+        _dogs.currentValue = dogsList.toList()
     }
 
     fun saveChanges(){
-        fileDog.writeText(Json.encodeToString(_dogs))
+        fileDog.writeText(Json.encodeToString(dogsList))
     }
 
     companion object {

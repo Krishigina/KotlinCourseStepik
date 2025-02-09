@@ -2,6 +2,7 @@ package org.example.multithreading.singletonCompanionInit.users
 
 import kotlinx.serialization.json.Json
 import org.example.multithreading.singletonCompanionInit.observers.MutableObservable
+import org.example.multithreading.singletonCompanionInit.observers.Observable
 import java.io.File
 
 class UserRepository private constructor(){
@@ -12,11 +13,17 @@ class UserRepository private constructor(){
 
     private val fileUser = File("usersRepository.json")
 
-    private val _users = loadUsers()
+    private val userList = loadUsers()
 
-    val users = MutableObservable(_users.toList())
+    private val _users = MutableObservable(userList.toList())
 
-    val oldestUser = MutableObservable(_users.maxBy { it.age })
+    val users: Observable<List<User>>
+        get() = _users
+
+    private val _oldestUser = MutableObservable(userList.maxBy { it.age })
+
+    val oldestUser: Observable<User>
+        get() = _oldestUser
 
     private fun loadUsers(): MutableList<User> {
         val content = fileUser.readText().trim()
@@ -24,7 +31,7 @@ class UserRepository private constructor(){
     }
 
     fun addUser(firstName: String, lastName: String, age: Int) {
-        val id = _users.maxOf { it.userId } + 1
+        val id = userList.maxOf { it.userId } + 1
         val user = User(
             id,
             firstName = firstName,
@@ -33,24 +40,24 @@ class UserRepository private constructor(){
             gender = Gender.MALE,
             age = age
         )
-        _users.add(user)
-        users.currentValue = _users.toList()
-        if (age > oldestUser.currentValue.age){
-            oldestUser.currentValue = user
+        userList.add(user)
+        _users.currentValue = userList.toList()
+        if (age > _oldestUser.currentValue.age){
+            _oldestUser.currentValue = user
         }
     }
 
     fun deleteUser(id: Int) {
-        _users.removeIf { it.userId == id }
-        users.currentValue = _users.toList()
-        val newOldest = _users.maxBy {it.age}
-        if (newOldest != oldestUser.currentValue){
-            oldestUser.currentValue = newOldest
+        userList.removeIf { it.userId == id }
+        _users.currentValue = userList.toList()
+        val newOldest = userList.maxBy {it.age}
+        if (newOldest != _oldestUser.currentValue){
+            _oldestUser.currentValue = newOldest
         }
     }
 
     fun saveChanges() {
-        fileUser.writeText(Json.encodeToString(_users))
+        fileUser.writeText(Json.encodeToString(userList))
     }
 
     companion object {

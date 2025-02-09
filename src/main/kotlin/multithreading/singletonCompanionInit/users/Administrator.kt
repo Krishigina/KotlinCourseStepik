@@ -22,25 +22,30 @@ class Administrator {
                     usersRepository.saveChanges()
                     break
                 }
+
                 Operation.ADD_USER -> addUser()
                 Operation.DELETE_USER -> deleteUser()
             }
         }
     }
 
-    private fun addUser(){
+    private fun addUser() {
         print("Enter first name: ")
         val firstName = readln()
         print("Enter last name: ")
         val lastName = readln()
         print("Enter age: ")
         val age = readln().toInt()
-        usersRepository.addUser(firstName, lastName, age)
+        UsersInvoker.addCommand {
+            usersRepository.addUser(firstName, lastName, age)
+        }
     }
 
-    private fun deleteUser(){
+    private fun deleteUser() {
         print("Enter id: ")
         val id = readln().toInt()
-        usersRepository.deleteUser(id)
+        UsersInvoker.addCommand{
+            usersRepository.deleteUser(id)
+        }
     }
 }

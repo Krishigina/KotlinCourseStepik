@@ -1,11 +1,14 @@
 package org.example.multithreading.singletonCompanionInit.users
 
 import kotlinx.serialization.json.Json
+import org.example.multithreading.singletonCompanionInit.command.Command
 import org.example.multithreading.singletonCompanionInit.observers.MutableObservable
 import org.example.multithreading.singletonCompanionInit.observers.Observable
 import java.io.File
+import java.util.concurrent.LinkedBlockingQueue
+import kotlin.concurrent.thread
 
-class UserRepository private constructor(){
+class UserRepository private constructor() {
 
     init {
         println("Creating repository...")
@@ -31,6 +34,7 @@ class UserRepository private constructor(){
     }
 
     fun addUser(firstName: String, lastName: String, age: Int) {
+        Thread.sleep(10_000)
         val id = userList.maxOf { it.userId } + 1
         val user = User(
             id,
@@ -42,16 +46,17 @@ class UserRepository private constructor(){
         )
         userList.add(user)
         _users.currentValue = userList.toList()
-        if (age > _oldestUser.currentValue.age){
+        if (age > _oldestUser.currentValue.age) {
             _oldestUser.currentValue = user
         }
     }
 
     fun deleteUser(id: Int) {
+        Thread.sleep(10_000)
         userList.removeIf { it.userId == id }
         _users.currentValue = userList.toList()
-        val newOldest = userList.maxBy {it.age}
-        if (newOldest != _oldestUser.currentValue){
+        val newOldest = userList.maxBy { it.age }
+        if (newOldest != _oldestUser.currentValue) {
             _oldestUser.currentValue = newOldest
         }
     }

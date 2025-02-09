@@ -22,25 +22,30 @@ class Administrator {
                     dogsRepository.saveChanges()
                     break
                 }
+
                 Operation.ADD_USER -> addDog()
                 Operation.DELETE_USER -> deleteDog()
             }
         }
     }
 
-    private fun addDog(){
+    private fun addDog() {
         print("Enter breed name: ")
         val breedName = readln()
         print("Enter dog name: ")
         val dogName = readln()
         print("Enter weight: ")
         val weight = readln().toDouble()
-        dogsRepository.addDog(breedName, dogName, weight)
+        DogsInvoker.addCommand {
+            dogsRepository.addDog(breedName, dogName, weight)
+        }
     }
 
-    private fun deleteDog(){
+    private fun deleteDog() {
         print("Enter id: ")
         val id = readln().toInt()
-        dogsRepository.deleteDog(id)
+        DogsInvoker.addCommand {
+            dogsRepository.deleteDog(id)
+        }
     }
 }

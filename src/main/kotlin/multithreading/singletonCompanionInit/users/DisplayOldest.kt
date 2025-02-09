@@ -1,5 +1,6 @@
-package org.example.multithreading.singletonCompanionInit.dogs
+package org.example.multithreading.singletonCompanionInit.users
 
+import org.example.multithreading.singletonCompanionInit.observers.Observer
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
@@ -7,7 +8,7 @@ import javax.swing.JFrame
 import javax.swing.JScrollPane
 import javax.swing.JTextArea
 
-class Display {
+class DisplayOldest {
 
     fun show() {
         val textArea = JTextArea().apply {
@@ -22,8 +23,8 @@ class Display {
             isResizable = false
             add(scrollPane)
         }
-        DogsRepository.getInstance("qwerty").dogs.registerObserver {
-            textArea.text = it.joinToString("\n")
+        UserRepository.getInstance("qwerty").oldestUser.registerObserver {
+            textArea.text = "Oldest person is: $it"
         }
     }
 }

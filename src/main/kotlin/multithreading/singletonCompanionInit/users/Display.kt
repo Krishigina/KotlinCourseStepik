@@ -1,6 +1,6 @@
 package org.example.multithreading.singletonCompanionInit.users
 
-import org.example.multithreading.singletonCompanionInit.observers.Observer
+
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
@@ -8,7 +8,7 @@ import javax.swing.JFrame
 import javax.swing.JScrollPane
 import javax.swing.JTextArea
 
-class Display{
+class Display {
 
     fun show() {
         val textArea = JTextArea().apply {
@@ -23,9 +23,8 @@ class Display{
             isResizable = false
             add(scrollPane)
         }
-        UserRepository.getInstance("qwerty").addOnUsersChangedListener { newValue ->
-            newValue.joinToString("\n").let { textArea.text = it }
+        UserRepository.getInstance("qwerty").users.registerObserver {
+            textArea.text = it.joinToString("\n")
         }
-
     }
 }
